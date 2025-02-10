@@ -1,1 +1,17 @@
-<p>home works!</p>
+<div class="home-container">
+    <h1>QuickShare</h1>
+    <mat-card class="upload-card">
+      <div class="upload-area">
+        <p>Drag & Drop to Upload Files</p>
+        <button mat-raised-button color="primary" (click)="openFileDialog()">Upload Files</button>
+      </div>
+    </mat-card>
+    <mat-card class="file-list-card">
+      <h2>Uploaded Files</h2>
+      <table mat-table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card>
+  </div>
+  

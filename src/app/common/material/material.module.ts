@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -29,45 +27,19 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-const materialModules = [
-  MatToolbarModule,
-  MatTooltipModule,
-  MatIconModule,
-  MatButtonModule,
-  MatTabsModule,
-  MatSidenavModule,
-  MatTreeModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatMenuModule,
-  MatCheckboxModule,
-  MatRadioModule,
-  MatListModule,
+const materialNodules = [
   MatCardModule,
-  MatChipsModule,
-  MatAutocompleteModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatDialogModule,
-  MatGridListModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  DragDropModule,
-  MatExpansionModule
+  MatFormFieldModule
 ];
 
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    materialModules
+    materialNodules
   ],
   exports:[
-    materialModules
+    materialNodules
   ]
 })
 export class MaterialModule { }
