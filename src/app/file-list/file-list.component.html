@@ -2,10 +2,11 @@
   <h2>Your Uploaded Files</h2>
   <mat-card class="file-list-card" *ngIf="files.length > 0; else noFiles">
     <mat-list>
-      <mat-list-item *ngFor="let file of files" (click)="selectFile(file)">
+      <mat-list-item *ngFor="let file of files">
         <mat-icon mat-list-icon>insert_drive_file</mat-icon>
         <span mat-line>{{ file.name }}</span>
         <span mat-line>{{ file.size / 1024 | number: '1.0-0' }} KB</span>
+        <button mat-button (click)="downloadFile(file)">Download</button>
       </mat-list-item>
     </mat-list>
   </mat-card>
