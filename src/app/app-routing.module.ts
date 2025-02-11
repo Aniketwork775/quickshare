@@ -4,12 +4,14 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { UploadComponent } from './upload/upload.component';
 import { FileListComponent } from './file-list/file-list.component';
+import { ShareFileComponent } from './share-file/share-file.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'upload', component: UploadComponent },
   { path: 'files', component: FileListComponent },
+  { path: 'share', component: ShareFileComponent },
 ];
 
 @NgModule({

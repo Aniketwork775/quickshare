@@ -1,19 +1,21 @@
 <div class="file-list-container">
-    <h2>Your Uploaded Files</h2>
-    <mat-card class="file-list-card" *ngIf="files.length > 0; else noFiles">
-      <mat-list>
-        <mat-list-item *ngFor="let file of files">
-          <mat-icon mat-list-icon>insert_drive_file</mat-icon>
-          <span mat-line>{{ file.name }}</span>
-          <span mat-line>{{ file.size / 1024 | number: '1.0-0' }} KB</span>
-        </mat-list-item>
-      </mat-list>
+  <h2>Your Uploaded Files</h2>
+  <mat-card class="file-list-card" *ngIf="files.length > 0; else noFiles">
+    <mat-list>
+      <mat-list-item *ngFor="let file of files" (click)="selectFile(file)">
+        <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+        <span mat-line>{{ file.name }}</span>
+        <span mat-line>{{ file.size / 1024 | number: '1.0-0' }} KB</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <ng-template #noFiles>
+    <mat-card class="no-files-card">
+      <p>No files uploaded yet. Please upload files to see them here.</p>
     </mat-card>
-  
-    <ng-template #noFiles>
-      <mat-card class="no-files-card">
-        <p>No files uploaded yet. Please upload files to see them here.</p>
-      </mat-card>
-    </ng-template>
-  </div>
-  
+  </ng-template>
+
+  <!-- ShareFile Component -->
+  <app-share-file [fileToShare]="selectedFile"></app-share-file>
+</div>

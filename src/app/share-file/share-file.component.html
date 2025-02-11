@@ -1,0 +1,28 @@
+<div class="share-file-container">
+    <h2>Share Your File</h2>
+  
+    <mat-card *ngIf="fileToShare" class="share-card">
+      <mat-card-header>
+        <mat-card-title>{{ fileToShare.name }}</mat-card-title>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <p>Click the button below to generate a shareable link for this file:</p>
+        <button mat-raised-button color="primary" (click)="generateShareLink()" [disabled]="!fileToShare">
+          Generate Shareable Link
+        </button>
+  
+        <div *ngIf="shareLink" class="share-link-container">
+          <mat-form-field appearance="fill">
+            <input matInput [value]="shareLink" readonly>
+          </mat-form-field>
+          <button mat-button (click)="copyLink()">Copy Link</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  
+    <mat-card *ngIf="!fileToShare" class="no-file-selected">
+      <p>Please select a file from your uploaded files to share.</p>
+    </mat-card>
+  </div>
+  

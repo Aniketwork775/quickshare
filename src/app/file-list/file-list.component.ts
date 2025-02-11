@@ -7,7 +7,8 @@ import { openDB } from 'idb';
   styleUrls: ['./file-list.component.scss']
 })
 export class FileListComponent implements OnInit {
-  files: any = [];
+  files: any[] = [];
+  selectedFile: { name: string, size: number, key: string } | null = null;
 
   async ngOnInit() {
     await this.loadFiles();
@@ -21,8 +22,13 @@ export class FileListComponent implements OnInit {
     if (keys.length > 0) {
       this.files = await Promise.all(keys.map(async (key) => {
         const fileData = await db.get('files', key);
-        return { name: key, size: fileData.byteLength };
+        return { name: key, size: fileData.byteLength, key: key };
       }));
     }
+  }
+
+  // Select a file to share
+  selectFile(file: { name: string, size: number, key: string }) {
+    this.selectedFile = file;
   }
 }

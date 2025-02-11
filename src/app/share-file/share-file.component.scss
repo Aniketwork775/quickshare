@@ -1,0 +1,36 @@
+.share-file-container {
+    padding: 20px;
+    text-align: center;
+  
+    h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+  
+    .share-card {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  
+    .share-link-container {
+      margin-top: 20px;
+    }
+  
+    mat-form-field {
+      width: 80%;
+      margin-right: 10px;
+    }
+  
+    mat-card {
+      margin-top: 20px;
+      text-align: center;
+    }
+  
+    button {
+      margin-top: 10px;
+    }
+  }
+  
