@@ -1,1 +1,19 @@
-<p>upload works!</p>
+<div class="upload-container">
+    <h2>Upload Your File</h2>
+    <mat-card class="upload-card">
+      <!-- File input -->
+      <input type="file" (change)="onFileSelect($event)" />
+      
+      <!-- Upload button -->
+      <button mat-raised-button color="primary" (click)="uploadFile()" [disabled]="!selectedFile">
+        Upload File
+      </button>
+      
+      <!-- Upload progress bar -->
+      <mat-progress-bar *ngIf="uploadProgress" mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+      
+      <!-- Cancel upload button -->
+      <button *ngIf="uploading" mat-button (click)="cancelUpload()">Cancel Upload</button>
+    </mat-card>
+  </div>
+  

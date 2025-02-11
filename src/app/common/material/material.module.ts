@@ -22,6 +22,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatSelectModule} from '@angular/material/select';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -29,9 +30,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 const materialNodules = [
   MatCardModule,
-  MatFormFieldModule
+  MatFormFieldModule,
+  MatProgressSpinnerModule,
+  MatProgressBarModule,
+  MatIconModule,
+  MatListModule
 ];
-
 
 @NgModule({
   declarations: [],
