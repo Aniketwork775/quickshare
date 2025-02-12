@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { openDB } from 'idb';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-file-list',
@@ -8,46 +8,50 @@ import { openDB } from 'idb';
 })
 export class FileListComponent implements OnInit {
   files: any[] = [];
-  selectedFile: { name: string, size: number, key: string } | null = null;
+
+  constructor(private firestore: AngularFirestore) {}
 
   async ngOnInit() {
     await this.loadFiles();
   }
 
-  // Load files from IndexedDB
   async loadFiles() {
-    const db = await openDB('quickshare-db', 1);
-    const keys = await db.getAllKeys('files'); // Get all file names
-
-    if (keys.length > 0) {
-      this.files = await Promise.all(keys.map(async (key) => {
-        const fileData = await db.get('files', key);
-        return { name: key, size: fileData.byteLength, key: key };
-      }));
+    const fileSnapshots = await this.firestore.collection('files').get().toPromise();
+    if (fileSnapshots) {
+      this.files = fileSnapshots.docs.map(doc => {
+        const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
+        return { ...data, key: doc.id };
+      });
     }
   }
 
-  // Select a file to share
-  selectFile(file: { name: string, size: number, key: string }) {
-    this.selectedFile = file;
-  }
+  async downloadFile(file: { name: string, fileData: string }) {
+    const blob = this.base64ToBlob(file.fileData);
+    const url = window.URL.createObjectURL(blob);
 
-  // Download the selected file
-  async downloadFile(file: { name: string, size: number, key: string }) {
-    const db = await openDB('quickshare-db', 1);
-    const fileData = await db.get('files', file.key);
-
-    // Create a Blob from the file data
-    const blob = new Blob([fileData], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-
-    // Create a temporary link element to trigger the download
     const a = document.createElement('a');
     a.href = url;
-    a.download = file.name; // Set the download file name
+    a.download = file.name;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
+  }
 
-    // Clean up the URL object
-    URL.revokeObjectURL(url);
+  copyLink(file: { name: string, fileData: string }) {
+    const blob = this.base64ToBlob(file.fileData);
+    const url = window.URL.createObjectURL(blob);
+    const a=btoa(url);
+    const b=btoa(file.name);
+    const shareableLink = `${window.location.origin}/download/${a}/${b}`;
+    navigator.clipboard.writeText(shareableLink).then(() => {
+      alert('Shareable link copied!');
+    });
+  }
+
+  private base64ToBlob(base64: string) {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'application/octet-stream' });
   }
 }
