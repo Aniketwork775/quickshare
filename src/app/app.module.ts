@@ -11,6 +11,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './common/material/material.module';
 import { ShareFileComponent } from './share-file/share-file.component';
 // import { MaterialModule } from './common/material/material.module';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from 'src/environments/environment';
+import { DownloadComponent } from './download/download.component';
+
 
 @NgModule({
   declarations: [
@@ -19,13 +25,17 @@ import { ShareFileComponent } from './share-file/share-file.component';
     LoginComponent,
     UploadComponent,
     FileListComponent,
-    ShareFileComponent
+    ShareFileComponent,
+    DownloadComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

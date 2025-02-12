@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { UploadComponent } from './upload/upload.component';
 import { FileListComponent } from './file-list/file-list.component';
 import { ShareFileComponent } from './share-file/share-file.component';
+import { DownloadComponent } from './download/download.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'upload', component: UploadComponent },
   { path: 'files', component: FileListComponent },
   { path: 'share', component: ShareFileComponent },
+  { path: 'download/:a/:b', component:DownloadComponent},
 ];
 
 @NgModule({
