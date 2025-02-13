@@ -34,7 +34,8 @@ const materialNodules = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatIconModule,
-  MatListModule
+  MatListModule,
+  MatSelectModule
 ];
 
 @NgModule({
