@@ -22,11 +22,35 @@ export class FileViewComponent implements OnInit {
     }
   }
 
+  // async fetchFile(fileId: string) {
+  //   try {
+  //     const doc = await this.firestore.collection('files').doc(fileId).get().toPromise();
+  //     if (doc?.exists) {
+  //       this.file = doc.data() as any;
+  //     } else {
+  //       alert('File not found!');
+  //       this.router.navigate(['/']);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching file:', error);
+  //   } finally {
+  //     this.loading = false;
+  //   }
+  // }
   async fetchFile(fileId: string) {
     try {
       const doc = await this.firestore.collection('files').doc(fileId).get().toPromise();
       if (doc?.exists) {
-        this.file = doc.data() as any;
+        const fileData = doc.data() as any;
+        const now = Date.now();
+  
+        if (fileData.expiresAt < now) {
+          alert('This file has expired and is no longer available.');
+          this.router.navigate(['/']);
+          return;
+        }
+  
+        this.file = fileData;
       } else {
         alert('File not found!');
         this.router.navigate(['/']);
@@ -37,6 +61,7 @@ export class FileViewComponent implements OnInit {
       this.loading = false;
     }
   }
+  
 
   downloadFile() {
     if (!this.file) return;
