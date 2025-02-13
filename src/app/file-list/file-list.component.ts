@@ -49,6 +49,18 @@ export class FileListComponent implements OnInit {
     });
   }
 
+  getRemainingTime(expiresAt: number): string {
+    const now = Date.now();
+    const timeLeft = expiresAt - now;
+
+    if (timeLeft <= 0) return 'Expired';
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    return `${days} days, ${hours} hours`;
+  }
+
   private base64ToBlob(base64: string) {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
