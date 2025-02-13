@@ -8,6 +8,7 @@
         <span >&nbsp; Expires in: {{ getRemainingTime(file.expiresAt) }}</span>
         <span mat-line>&nbsp; {{ file.size / 1024 | number: '1.0-0' }} KB</span>
         <button mat-button (click)="downloadFile(file)">Download</button>
+        <button mat-button color="warn" (click)="deleteFile(file.key)">Delete</button>
         <button mat-button (click)="copyLink(file)">Copy Shareable Link</button>
       </mat-list-item>
     </mat-list>

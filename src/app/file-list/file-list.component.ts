@@ -25,16 +25,20 @@ export class FileListComponent implements OnInit {
     }
   }
 
-  async downloadFile(file: { name: string, fileData: string }) {
-    const blob = this.base64ToBlob(file.fileData);
-    const url = window.URL.createObjectURL(blob);
+  downloadFile(file: any) {
+    const link = document.createElement('a');
+    link.href = `data:application/octet-stream;base64,${file.fileData}`;
+    link.download = file.name;
+    link.click();
+  }
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = file.name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  deleteFile(fileId: string) {
+    console.log(fileId);
+    
+    this.firestore.collection('files').doc(fileId).delete().then(() => {
+      alert('File deleted successfully');
+      this.loadFiles();
+    });
   }
 
   copyLink(file: { name: string, fileData: string,key:string }) {
