@@ -47,10 +47,14 @@ export class UploadComponent {
       const fileData = event.target.result.split(',')[1]; // Convert to Base64
   
       const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getMinutes() + 30); // ✅ Expiration set to 7 days from now
+      expiresAt.setDate(expiresAt.getDate() + 7); // ✅ Expiration set to 7 days from now
   
       await this.firestore.collection('files').add({
         name: this.selectedFile?.name,
+        // name: this.selectedFile?.name,
+        size: this.selectedFile?.size,
+        // fileData: base64String,
+        createdAt: new Date(),
         fileData,
         expiresAt: expiresAt.getTime() // Store as timestamp
       });
