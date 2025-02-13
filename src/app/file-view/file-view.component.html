@@ -1,0 +1,14 @@
+<div class="file-view-container">
+    <h2>Download File</h2>
+    <mat-card class="file-card" *ngIf="!loading; else loadingTemplate">
+      <h3>{{ file?.name }}</h3>
+      <button mat-raised-button color="primary" (click)="downloadFile()" *ngIf="file">
+        Download File
+      </button>
+    </mat-card>
+  
+    <ng-template #loadingTemplate>
+      <p>Loading file...</p>
+    </ng-template>
+  </div>
+  
