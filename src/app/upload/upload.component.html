@@ -2,9 +2,21 @@
   <h2>Upload Your File</h2>
   <mat-card class="upload-card">
     <input type="file" (change)="onFileSelect($event)" />
-    <button mat-raised-button color="primary" (click)="uploadFile()" [disabled]="!selectedFile || uploading">
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Expiration Time</mat-label>
+      <mat-select [(value)]="selectedExpiration">
+        <mat-option *ngFor="let option of expirationOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="uploadFile()" [disabled]="!selectedFile">
       Upload File
     </button>
-    <mat-progress-bar *ngIf="uploading" mode="indeterminate"></mat-progress-bar>
+
+    <mat-progress-bar *ngIf="uploadProgress" mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+    <button *ngIf="uploading" mat-button (click)="cancelUpload()">Cancel Upload</button>
   </mat-card>
 </div>
