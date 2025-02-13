@@ -16,6 +16,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from 'src/environments/environment';
 import { DownloadComponent } from './download/download.component';
+import { FileViewComponent } from './file-view/file-view.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { DownloadComponent } from './download/download.component';
     UploadComponent,
     FileListComponent,
     ShareFileComponent,
-    DownloadComponent
+    DownloadComponent,
+    FileViewComponent
   ],
   imports: [
     BrowserModule,

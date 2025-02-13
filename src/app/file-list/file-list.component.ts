@@ -37,12 +37,13 @@ export class FileListComponent implements OnInit {
     document.body.removeChild(a);
   }
 
-  copyLink(file: { name: string, fileData: string }) {
+  copyLink(file: { name: string, fileData: string,key:string }) {
     const blob = this.base64ToBlob(file.fileData);
     const url = window.URL.createObjectURL(blob);
     const a=btoa(url);
     const b=btoa(file.name);
-    const shareableLink = `${window.location.origin}/download/${a}/${b}`;
+    // const shareableLink = `${window.location.origin}/download/${a}/${b}`;
+    const shareableLink = `${window.location.origin}/file/${file.key}`;
     navigator.clipboard.writeText(shareableLink).then(() => {
       alert('Shareable link copied!');
     });
