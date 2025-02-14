@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
@@ -11,7 +11,8 @@ export class UploadComponent {
   selectedExpiration: number = 7; // Default to 7 days
   uploadProgress: number | null = null;
   uploading: boolean = false;
-
+  @Output() uploaded=new EventEmitter();
+  file:any='';
   expirationOptions = [
     { label: '1 Hour', value: 1 / 24 },
     { label: '1 Day', value: 1 },
@@ -60,6 +61,8 @@ export class UploadComponent {
       });
 
       alert('File uploaded successfully!');
+      let input=window.document.getElementById('fileInput')
+      this.uploaded.emit();
       this.selectedFile = null;
       this.uploadProgress = null;
     };

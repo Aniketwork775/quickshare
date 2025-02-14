@@ -1,7 +1,7 @@
 <div class="upload-container">
   <h2>Upload Your File</h2>
   <mat-card class="upload-card">
-    <input type="file" (change)="onFileSelect($event)" />
+    <input type="file" #fileInput (change)="onFileSelect($event)" />
     
     <mat-form-field appearance="outline">
       <mat-label>Expiration Time</mat-label>
