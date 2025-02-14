@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
@@ -20,11 +21,46 @@ export class UploadComponent {
     { label: '7 Days', value: 7 },
     { label: '30 Days', value: 30 }
   ];
+  userIpAddress: any;
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore,private http:HttpClient) {
+    this.getIPAddress();
+  }
 
   onFileSelect(event: any) {
     this.selectedFile = event.target.files[0];
+  }
+
+
+  getIPAddress() {
+    // this.http.get<{ ip:any }>('https://api64.ipify.org?format=json').subscribe(
+    //   (response) => {
+    //     this.userIpAddress = response.ip;
+    //     console.log("this.userIpAddress===",this.userIpAddress);
+        
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching IP address', error);
+    //   }
+    // );
+    this.http.get('https://ipinfo.io/json').subscribe((response:any) => {
+      this.userIpAddress=response.ip;
+      console.log(this.userIpAddress);
+      
+    },(err)=>{
+      console.error('Error fetching IP:', err);
+      const randomIP = this.generateRandomIp();
+      console.log('Using Random IP:', randomIP);
+      this.userIpAddress=randomIP;
+    });
+  }
+
+  generateRandomIp(): string {
+    return `${this.getRandom(1, 255)}.${this.getRandom(0, 255)}.${this.getRandom(0, 255)}.${this.getRandom(1, 255)}`;
+  }
+  
+  getRandom(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   uploadFile() {
@@ -57,7 +93,8 @@ export class UploadComponent {
 //      fileData: base64String,
         createdAt: new Date(),
         fileData,
-        expiresAt: expiresAt.getTime()
+        expiresAt: expiresAt.getTime(),
+        ipAddress: this.userIpAddress // Store the user's IP address
       });
 
       alert('File uploaded successfully!');
