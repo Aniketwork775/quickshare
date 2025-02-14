@@ -10,11 +10,11 @@ import { FileViewComponent } from './file-view/file-view.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'upload', component: UploadComponent },
-  { path: 'files', component: FileListComponent },
-  { path: 'share', component: ShareFileComponent },
-  { path: 'download/:a/:b', component:DownloadComponent},
+  // { path: 'login', component: LoginComponent },
+  // { path: 'upload', component: UploadComponent },
+  // { path: 'files', component: FileListComponent },
+  // { path: 'share', component: ShareFileComponent },
+  // { path: 'download/:a/:b', component:DownloadComponent},
   { path: 'file/:id', component: FileViewComponent }
 ];
 
