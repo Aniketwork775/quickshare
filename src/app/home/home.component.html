@@ -15,5 +15,5 @@
     </mat-card>
   </div> -->
   
-  <app-upload (uploaded)="uploaded()"></app-upload>
-  <app-file-list *ngIf="upload"></app-file-list>
+  <app-upload (uploaded)="FileListComponent.loadnewFiles()"></app-upload>
+  <app-file-list #FileListComponent></app-file-list>

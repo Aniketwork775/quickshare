@@ -1,5 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FileService } from '../services/file.service';
+import { FileListComponent } from '../file-list/file-list.component';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,7 @@ import { FileService } from '../services/file.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnDestroy{
+  @ViewChild('FileListComponent') FileListComponent!: FileListComponent;
   
   constructor(private fileService: FileService){}
 

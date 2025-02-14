@@ -68,6 +68,22 @@ if (fileSnapshots) {
 
   }
 
+  loadnewFiles() {
+    setTimeout( () => {
+      this.loadFiles();
+      // const fileSnapshots = await this.firestore.collection('files').get().toPromise();
+      // if (fileSnapshots) {
+      //   this.files = fileSnapshots.docs
+      //     .map(doc => {
+      //       const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
+      //       return { ...data, key: doc.id };
+      //     })
+      //     .filter((file: any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress); 
+      // }
+    }, 1000);
+  }
+  
+
   downloadFile(file: any) {
     const link = document.createElement('a');
     link.href = `data:application/octet-stream;base64,${file.fileData}`;
