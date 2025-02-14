@@ -1,4 +1,4 @@
-<div class="home-container">
+<!-- <div class="home-container">
     <h1>QuickShare</h1>
     <mat-card class="upload-card">
       <div class="upload-area">
@@ -8,10 +8,12 @@
     </mat-card>
     <mat-card class="file-list-card">
       <h2>Uploaded Files</h2>
-      <!-- <table mat-table>
+      <table mat-table>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table> -->
+      </table>
     </mat-card>
-  </div>
+  </div> -->
   
+  <app-upload (uploaded)="uploaded()"></app-upload>
+  <app-file-list *ngIf="upload"></app-file-list>

@@ -6,7 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  upload:boolean=false;
   openFileDialog(){
     
+  }
+
+  uploaded(){
+    this.upload=true
   }
 }
