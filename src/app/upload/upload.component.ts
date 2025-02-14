@@ -22,11 +22,23 @@ export class UploadComponent {
     { label: '30 Days', value: 30 }
   ];
   userIpAddress: any;
+  sessionToken: any=null;
 
   constructor(private firestore: AngularFirestore,private http:HttpClient) {
     this.getIPAddress();
+    // console.log("sessionToken --> ",sessionStorage.getItem('Token'));
+    this.sessionToken = sessionStorage.getItem('Token');
+    if(this.sessionToken==null){
+      this.sessionToken = this.generateRandomToken();
+      sessionStorage.setItem('Token', this.sessionToken); // Store in sessionStorage
+    }
   }
 
+  // Function to generate a random token
+  generateRandomToken(): string {
+    return Math.random().toString(36) // Example token generation
+  }
+  
   onFileSelect(event: any) {
     this.selectedFile = event.target.files[0];
   }
@@ -94,7 +106,8 @@ export class UploadComponent {
         createdAt: new Date(),
         fileData,
         expiresAt: expiresAt.getTime(),
-        ipAddress: this.userIpAddress // Store the user's IP address
+        ipAddress: this.userIpAddress, // Store the user's IP address 
+        Token: this.sessionToken // Store the user's IP address 
       });
 
       alert('File uploaded successfully!');
