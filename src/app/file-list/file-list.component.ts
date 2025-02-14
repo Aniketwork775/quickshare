@@ -76,7 +76,7 @@ if (fileSnapshots) {
   }
 
   deleteFile(fileId: string) {
-    console.log(fileId);
+    // console.log(fileId);
     
     this.firestore.collection('files').doc(fileId).delete().then(() => {
       alert('File deleted successfully');
@@ -90,7 +90,7 @@ if (fileSnapshots) {
     const a=btoa(url);
     const b=btoa(file.name);
     // const shareableLink = `${window.location.origin}/download/${a}/${b}`;
-    const shareableLink = `${window.location.origin}/file/${file.key}`;
+    const shareableLink = `${window.location.origin}/#/file/${file.key}`;
     navigator.clipboard.writeText(shareableLink).then(() => {
       alert('Shareable link copied!');
     });
@@ -104,8 +104,31 @@ if (fileSnapshots) {
 
     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-    return `${days} days, ${hours} hours`;
+    const mint = Math.floor((timeLeft % (1000 * 60 * 60 )) / (1000 * 60))+1;
+    var str='';
+    if(days>0){
+      str=`${days} days`;
+      if(hours>0){
+        str=str+`, ${hours} hours`;
+        if(mint>0){
+          str=str+`, ${mint} mints`
+        }
+      }
+    }
+    else{
+      if(hours>0){
+        str=`${hours} hours`;
+        if(mint>0){
+          str=str+`, ${mint} mints`
+        }
+      }
+      else{
+        if(mint>0){
+          str=`${mint} mints`
+        }
+      }
+    }
+    return str;
   }
 
   private base64ToBlob(base64: string) {
