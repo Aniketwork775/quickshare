@@ -10,7 +10,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class FileListComponent implements OnInit {
   files: any[] = [];
   userIpAddress: any;
-
+  sessionToken:any=null;
   constructor(private firestore: AngularFirestore,private http:HttpClient) {}
 
   async ngOnInit() {
@@ -18,14 +18,15 @@ export class FileListComponent implements OnInit {
   }
 
   getIPAddress() {
+    this.sessionToken=sessionStorage.getItem('Token');
     this.http.get('https://ipinfo.io/json').subscribe((response:any) => {
       this.userIpAddress=response.ip;
-      console.log("this.userIpAddress",this.userIpAddress);
+      // console.log("this.userIpAddress",this.userIpAddress);
       this.loadFiles();
     },(err)=>{
-      console.error('Error fetching IP:', err);
+      // console.error('Error fetching IP:', err);
       const randomIP = this.generateRandomIp();
-      console.log('Using Random IP:', randomIP);
+      // console.log('Using Random IP:', randomIP);
       this.userIpAddress=randomIP;
       this.loadFiles();
     });
@@ -48,7 +49,7 @@ export class FileListComponent implements OnInit {
     //     return { ...data, key: doc.id };
     //   });
     // }
-    console.log("this.userIpAddress=====",this.userIpAddress);
+    // console.log("this.userIpAddress=====",this.userIpAddress);
     
     const fileSnapshots = await this.firestore.collection('files').get().toPromise();
 if (fileSnapshots) {
@@ -57,7 +58,7 @@ if (fileSnapshots) {
       const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
       return { ...data, key: doc.id };
     })
-    .filter((file:any) => file?.ipAddress === this.userIpAddress); // Filters files where IP is '127.0.0.1'
+    .filter((file:any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress); // Filters files where IP is '127.0.0.1' 
 }
     // this.firestore.collection('files', ref => ref.where('ipAddress', '==', this.userIpAddress))
     //   .valueChanges()
