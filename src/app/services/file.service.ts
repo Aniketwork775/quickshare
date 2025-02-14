@@ -15,6 +15,18 @@ export class FileService {
       this.firestore.collection('files').doc(doc.id).delete();
     });
 
-    console.log('Expired files deleted successfully.');
+    // console.log('Expired files deleted successfully.');
+  }
+
+  async cleanupondestroy(){
+    const Token=sessionStorage.getItem('Token');
+    const snapshot = await this.firestore.collection('files', ref => ref.where('Token', '==', Token)).get().toPromise();
+
+    snapshot?.forEach(doc => {
+      this.firestore.collection('files').doc(doc.id).delete();
+    });
+
+    sessionStorage.removeItem('Token');
+    // console.log('Expired files deleted successfully.');
   }
 }
