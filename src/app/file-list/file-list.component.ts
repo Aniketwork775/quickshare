@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
@@ -8,21 +9,62 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class FileListComponent implements OnInit {
   files: any[] = [];
+  userIpAddress: any;
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore,private http:HttpClient) {}
 
   async ngOnInit() {
-    await this.loadFiles();
+    this.getIPAddress();
+  }
+
+  getIPAddress() {
+    this.http.get('https://ipinfo.io/json').subscribe((response:any) => {
+      this.userIpAddress=response.ip;
+      console.log("this.userIpAddress",this.userIpAddress);
+      this.loadFiles();
+    },(err)=>{
+      console.error('Error fetching IP:', err);
+      const randomIP = this.generateRandomIp();
+      console.log('Using Random IP:', randomIP);
+      this.userIpAddress=randomIP;
+      this.loadFiles();
+    });
+    
+  }
+
+  generateRandomIp(): string {
+    return `${this.getRandom(1, 255)}.${this.getRandom(0, 255)}.${this.getRandom(0, 255)}.${this.getRandom(1, 255)}`;
+  }
+  
+  getRandom(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   async loadFiles() {
+    // const fileSnapshots = await this.firestore.collection('files').get().toPromise();
+    // if (fileSnapshots) {
+    //   this.files = fileSnapshots.docs.map(doc => {
+    //     const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
+    //     return { ...data, key: doc.id };
+    //   });
+    // }
+    console.log("this.userIpAddress=====",this.userIpAddress);
+    
     const fileSnapshots = await this.firestore.collection('files').get().toPromise();
-    if (fileSnapshots) {
-      this.files = fileSnapshots.docs.map(doc => {
-        const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
-        return { ...data, key: doc.id };
-      });
-    }
+if (fileSnapshots) {
+  this.files = fileSnapshots.docs
+    .map(doc => {
+      const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
+      return { ...data, key: doc.id };
+    })
+    .filter((file:any) => file?.ipAddress === this.userIpAddress); // Filters files where IP is '127.0.0.1'
+}
+    // this.firestore.collection('files', ref => ref.where('ipAddress', '==', this.userIpAddress))
+    //   .valueChanges()
+    //   .subscribe(files => {
+    //     this.files = files;
+    //   });
+
   }
 
   downloadFile(file: any) {
