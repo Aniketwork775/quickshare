@@ -9,17 +9,17 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class UploadComponent {
   selectedFile: File | null = null;
-  selectedExpiration: number = 7; // Default to 7 days
+  selectedExpiration: number = 300; // Default to 7 days
   uploadProgress: number | null = null;
   uploading: boolean = false;
   @Output() uploaded=new EventEmitter();
   file:any='';
   expirationOptions = [
-    { label: '1 Hour', value: 1 / 24 },
-    { label: '1 Day', value: 1 },
-    { label: '3 Days', value: 3 },
-    { label: '7 Days', value: 7 },
-    { label: '30 Days', value: 30 }
+    // { label: '1 Hour', value: 1 / 24 },
+    { label: '1 mint', value: 60 },
+    { label: '5 mint', value: 300 },
+    { label: '10 mint', value: 600 },
+    { label: '30 mint', value: 1800 }
   ];
   userIpAddress: any;
   sessionToken: any=null;
@@ -57,12 +57,12 @@ export class UploadComponent {
     // );
     this.http.get('https://ipinfo.io/json').subscribe((response:any) => {
       this.userIpAddress=response.ip;
-      console.log(this.userIpAddress);
+      // console.log(this.userIpAddress);
       
     },(err)=>{
-      console.error('Error fetching IP:', err);
+      // console.error('Error fetching IP:', err);
       const randomIP = this.generateRandomIp();
-      console.log('Using Random IP:', randomIP);
+      // console.log('Using Random IP:', randomIP);
       this.userIpAddress=randomIP;
     });
   }
@@ -86,7 +86,7 @@ export class UploadComponent {
       const fileData = event.target.result.split(',')[1]; // Convert to Base64
 
       const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + this.selectedExpiration);
+      expiresAt.setSeconds(expiresAt.getSeconds() + this.selectedExpiration);
 
       // Simulating upload progress
       const interval = setInterval(() => {
