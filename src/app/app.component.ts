@@ -15,4 +15,8 @@ export class AppComponent implements OnInit {
       this.fileService.cleanupExpiredFiles();
     }, 60 * 60 * 1000); // ✅ Run every hour
   }
+
+  toggleDarkMode(){
+    
+  }
 }
