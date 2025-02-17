@@ -106,7 +106,8 @@ if (fileSnapshots) {
     const a=btoa(url);
     const b=btoa(file.name);
     // const shareableLink = `${window.location.origin}/download/${a}/${b}`;
-    const shareableLink = `${window.location.origin}/#/file/${file.key}`;
+    const shareableLink = `${window.location.origin}/#/file/${file.key}`;          // For Local 
+    // const shareableLink = `${window.location.origin}/quickshare/#/file/${file.key}`; // for Producton
     navigator.clipboard.writeText(shareableLink).then(() => {
       alert('Shareable link copied!');
     });

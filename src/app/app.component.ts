@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  title:string="quickshare";
   constructor(private fileService: FileService,private router:Router) {}
 
   ngOnInit() {
