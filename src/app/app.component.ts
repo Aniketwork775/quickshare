@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from './services/file.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,7 @@ import { FileService } from './services/file.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private fileService: FileService) {}
+  constructor(private fileService: FileService,private router:Router) {}
 
   ngOnInit() {
     this.fileService.cleanupExpiredFiles();
@@ -17,6 +18,10 @@ export class AppComponent implements OnInit {
   }
 
   toggleDarkMode(){
-    
+
+  }
+
+  navigation(){
+    this.router.navigate(['']);
   }
 }
