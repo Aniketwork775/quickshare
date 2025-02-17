@@ -1,17 +1,21 @@
-<div class="file-list-container">
-  <h2>Your Uploaded Files</h2>
-  <mat-card class="file-list-card" *ngIf="files.length > 0; else noFiles">
-    <mat-list>
-      <mat-list-item *ngFor="let file of files">
-        <mat-icon mat-list-icon>insert_drive_file</mat-icon>
-        <span mat-line>{{ file.name }}</span>
-        <span >&nbsp; Expires in: {{ getRemainingTime(file.expiresAt) }}</span>
-        <span mat-line>&nbsp; {{ file.size / 1024 | number: '1.0-0' }} KB</span>
-        <button mat-button (click)="downloadFile(file)">Download</button>
-        <button mat-button color="warn" (click)="deleteFile(file.key)">Delete</button>
-        <button mat-button (click)="copyLink(file)">Copy Shareable Link</button>
-      </mat-list-item>
-    </mat-list>
+<div class="file-list-container container">
+  <h2>Uploaded Files</h2>
+  <mat-card *ngFor="let file of files" class="file-card">
+    <div class="file-info">
+      <p><strong>Name:</strong> {{ file.name }}</p>
+      <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
+      <p>
+        <strong>Shareable Link:</strong>
+        <a [href]="'/download/' + file.id" target="_blank">{{ '/download/' + file.key }}</a>
+        <button mat-icon-button (click)="copyLink(file)" aria-label="Copy Link">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </p>
+    </div>
+    <div class="file-actions">
+      <button mat-raised-button color="primary" (click)="downloadFile(file)">Download</button>
+      <button mat-raised-button color="warn" (click)="deleteFile(file.id)">Delete</button>
+    </div>
   </mat-card>
 
   <ng-template #noFiles>
