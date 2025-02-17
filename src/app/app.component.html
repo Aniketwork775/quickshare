@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+<mat-toolbar color="primary" class="toolbar">
+    <span class="logo">QuickShare</span>
+    <span class="spacer"></span>
+    <button mat-icon-button aria-label="Toggle Dark Mode" (click)="toggleDarkMode()">
+      <mat-icon>brightness_6</mat-icon>
+    </button>
+  </mat-toolbar>
+  
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+  
