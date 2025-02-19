@@ -52,20 +52,20 @@ export class FileListComponent implements OnInit {
     // console.log("this.userIpAddress=====",this.userIpAddress);
     
     const fileSnapshots = await this.firestore.collection('files').get().toPromise();
-if (fileSnapshots) {
-  this.files = fileSnapshots.docs
-    .map(doc => {
-      const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
-      return { ...data, key: doc.id };
-    })
-    .filter((file:any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress); // Filters files where IP is '127.0.0.1' 
-}
+    if (fileSnapshots) {
+      this.files = fileSnapshots.docs
+        .map(doc => {
+          const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
+          return { ...data, key: doc.id };
+        })
+        .filter((file:any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress); // Filters files where IP is '127.0.0.1' 
+    }
     // this.firestore.collection('files', ref => ref.where('ipAddress', '==', this.userIpAddress))
     //   .valueChanges()
     //   .subscribe(files => {
     //     this.files = files;
     //   });
-
+    
   }
 
   loadnewFiles() {
@@ -101,10 +101,10 @@ if (fileSnapshots) {
   }
 
   copyLink(file: { name: string, fileData: string,key:string }) {
-    const blob = this.base64ToBlob(file.fileData);
-    const url = window.URL.createObjectURL(blob);
-    const a=btoa(url);
-    const b=btoa(file.name);
+    // const blob = this.base64ToBlob(file.fileData);
+    // const url = window.URL.createObjectURL(blob);
+    // const a=btoa(url);
+    // const b=btoa(file.name);
     // const shareableLink = `${window.location.origin}/download/${a}/${b}`;
     const shareableLink = `${window.location.origin}/#/file/${file.key}`;          // For Local 
     // const shareableLink = `${window.location.origin}/quickshare/#/file/${file.key}`; // for Producton
