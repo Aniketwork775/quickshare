@@ -10,13 +10,13 @@
       margin-bottom: 20px;
     }
   
-    .upload-card {
-      width: 100%;
-      max-width: 600px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    // .upload-card {
+    //   width: 100%;
+    //   max-width: 600px;
+    //   padding: 20px;
+    //   display: flex;
+    //   flex-direction: column;
+    //   align-items: center;
   
       mat-progress-bar {
         width: 100%;
@@ -24,6 +24,7 @@
       }
   
       button {
+        align-self: center;
         margin-top: 10px;
         width: 90%;
       }
@@ -34,5 +35,39 @@
         width: 100%;
       }
     }
+  // }
+  
+
+  .upload-card {
+    min-width: 720px;
+    padding: 20px;
+    margin-bottom: 20px;
   }
   
+  .upload-area {
+    border: 2px dashed #00796b;
+    padding: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .box__file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.box__icon {
+  width: 100%;
+  height: 80px;
+  fill: #92b0b3;
+  display: block;
+  margin-bottom: 10px;
+}
+
+label {
+    display: flex;
+    justify-content: center;
+}
