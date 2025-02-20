@@ -1,6 +1,6 @@
 <div class="file-list-container container">
   <h2>Uploaded Files</h2>
-  <mat-card *ngFor="let file of files" class="file-card"  [@fadeIn]>
+  <mat-card *ngFor="let file of files" class="card"  [@fadeIn]>
     <div class="file-info">
       <p><strong>Name:</strong> {{ file.name }}</p>
       <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
@@ -19,7 +19,7 @@
   </mat-card>
 
   <div *ngIf="files?.length==0">
-    <mat-card class="file-card">
+    <mat-card class="card">
       <p>No files uploaded yet. Please upload files to see them here.</p>
     </mat-card>
   </div>

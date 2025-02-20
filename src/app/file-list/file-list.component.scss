@@ -5,7 +5,7 @@
     // color: rgb(49, 17, 17);//-color($primary-palette);
   }
 
-  .file-card {
+  .card {
     display: flex;
     flex-direction: column;
     min-width: 400px;
@@ -16,10 +16,10 @@
       p {
         margin: 5px 0;
       }
-      a {
-        text-decoration: none;
-        color: rgb(26, 26, 85)//mat-color($accent-palette);
-      }
+      // a {
+      //   text-decoration: none;
+      //   color: rgb(26, 26, 85)//mat-color($accent-palette);
+      // }
     }
 
     .file-actions {
@@ -37,7 +37,7 @@
 
 /* Responsive design */
 @media (min-width: 600px) {
-  .file-card {
+  .card {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
