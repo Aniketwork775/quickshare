@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FileService } from './services/file.service';
 import { Router } from '@angular/router';
 
@@ -9,17 +9,34 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title:string="quickshare";
-  constructor(private fileService: FileService,private router:Router) {}
+  isDarkMode: any;
+  constructor(private fileService: FileService,private router:Router,private renderer: Renderer2) {}
 
   ngOnInit() {
     this.fileService.cleanupExpiredFiles();
     setInterval(() => {
       this.fileService.cleanupExpiredFiles();
     }, 60 * 60 * 1000); // ✅ Run every hour
+
+    // ngOnInit() {
+      const savedTheme = localStorage.getItem('theme');
+      this.isDarkMode = savedTheme === 'dark';
+      this.updateTheme();
+    // }
   }
 
-  toggleDarkMode(){
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+    this.updateTheme();
+  }
 
+  private updateTheme() {
+    if (this.isDarkMode) {
+      this.renderer.addClass(document.body, 'dark-mode');
+    } else {
+      this.renderer.removeClass(document.body, 'dark-mode');
+    }
   }
 
   navigation(){
