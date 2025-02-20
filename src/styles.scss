@@ -39,3 +39,70 @@ $dark-theme: mat.define-dark-theme((
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+:root {
+  --background-light: #f4f5fb;
+  --background-dark: #1f1c2f;
+  --primary-light: #3b82f6;
+  --primary-dark: #7dd3fc;
+  --secondary-light: #8b5cf6;
+  --secondary-dark: #9333ea;
+  --card-light: rgba(213, 238, 255, 0.6);
+  --card-dark: rgba(53, 67, 108 , 0.6);
+  --link-light: rgb(27 140 255);
+  --link-dark: rgba(246, 126, 255,0.6);
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--background-light);
+}
+
+.dark-mode {
+  background-color: var(--background-dark);
+  color: white;
+}
+.card {
+  background: var(--card-light);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+a{
+  text-decoration: none;
+  color: var(--link-light);
+}
+
+.dark-mode a{
+  color: var(--link-dark);
+}
+
+.dark-mode .card {
+  background: var(--card-dark);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+button {
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode button {
+  background: linear-gradient(135deg, var(--secondary-dark), var(--primary-dark));
+}
