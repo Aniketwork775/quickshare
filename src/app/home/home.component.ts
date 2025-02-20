@@ -11,15 +11,6 @@ export class HomeComponent implements OnDestroy{
   @ViewChild('FileListComponent') FileListComponent!: FileListComponent;
   
   constructor(private fileService: FileService){}
-
-  upload:boolean=false;
-  openFileDialog(){
-    
-  }
-
-  uploaded(){
-    this.upload=true
-  }
   
   ngOnDestroy(): void {
     this.fileService.cleanupondestroy();
