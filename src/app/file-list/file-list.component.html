@@ -1,5 +1,5 @@
 <div class="file-list-container container">
-  <h2>Uploaded Files</h2>
+  <h2 *ngIf="files?.length">Uploaded Files</h2>
   <mat-card *ngFor="let file of files" class="file-card"  [@fadeIn]>
     <div class="file-info">
       <p><strong>Name:</strong> {{ file.name }}</p>
