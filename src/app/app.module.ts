@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { DownloadComponent } from './download/download.component';
 import { FileViewComponent } from './file-view/file-view.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ThreeDBackgroundComponent } from './three-dbackground/three-dbackground.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     FileListComponent,
     ShareFileComponent,
     DownloadComponent,
-    FileViewComponent
+    FileViewComponent,
+    ThreeDBackgroundComponent
   ],
   imports: [
     BrowserModule,
