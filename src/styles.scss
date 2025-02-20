@@ -1,34 +1,41 @@
-@use '@angular/material' as mat; // Use @use instead of @import
+@use '@angular/material' as mat;
 
-@include mat.core(); // Include core styles
+@include mat.core();
 
-/* Define your color palettes */
-$primary-palette: mat.define-palette(mat.$indigo-palette);
-$accent-palette: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$warn-palette: mat.define-palette(mat.$red-palette);
+// Define color palettes
+$primary: mat.define-palette(mat.$indigo-palette);
+$accent: mat.define-palette(mat.$pink-palette);
+$warn: mat.define-palette(mat.$red-palette);
 
-/* Create the theme */
-$custom-theme: mat.define-light-theme((
+// Light Theme
+$light-theme: mat.define-light-theme((
   color: (
-    primary: $primary-palette,
-    accent: $accent-palette,
-    warn: $warn-palette
+    primary: $primary,
+    accent: $accent,
+    warn: $warn
   )
 ));
 
-/* Include the theme styles for Angular Material components */
-@include mat.all-component-themes($custom-theme);
+// Dark Theme
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: mat.define-palette(mat.$blue-gray-palette),
+    accent: mat.define-palette(mat.$deep-orange-palette),
+    warn: mat.define-palette(mat.$red-palette)
+  )
+));
 
-/* Global styles */
-body {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  margin: 0;
-  background-color: #f5f5f5;
+// Apply the light theme by default
+@include mat.all-component-themes($light-theme);
+
+// Dark mode class
+.dark-mode {
+  @include mat.all-component-themes($dark-theme);
+  background-color: #121212; // Dark background
+  color: white;
 }
 
-/* Utility classes */
-.container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
+// Smooth transition effect
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
