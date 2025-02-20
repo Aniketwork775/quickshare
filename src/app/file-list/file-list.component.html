@@ -1,12 +1,12 @@
 <div class="file-list-container container">
-  <h2 *ngIf="files?.length">Uploaded Files</h2>
+  <h2>Uploaded Files</h2>
   <mat-card *ngFor="let file of files" class="file-card"  [@fadeIn]>
     <div class="file-info">
       <p><strong>Name:</strong> {{ file.name }}</p>
       <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
       <p>
         <strong>Shareable Link:</strong>
-        <a [href]="'/#/file/' + file.key" target="_blank">{{ '/file/' + file.key }}</a>
+        <a [href]="'/#/file/' + file.key" target="_blank">{{ '/file/' + file.key }}</a>&nbsp;
         <button mat-icon-button (click)="copyLink(file)" aria-label="Copy Link">
           <mat-icon>content_copy</mat-icon>
         </button>
@@ -18,9 +18,9 @@
     </div>
   </mat-card>
 
-  <ng-template #noFiles>
-    <mat-card class="no-files-card">
+  <div *ngIf="files?.length==0">
+    <mat-card class="file-card">
       <p>No files uploaded yet. Please upload files to see them here.</p>
     </mat-card>
-  </ng-template>
+  </div>
 </div>
