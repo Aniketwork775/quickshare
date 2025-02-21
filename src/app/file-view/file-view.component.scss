@@ -1,0 +1,36 @@
+.file-view-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .card {
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    
+    box-shadow:inset -5px -5px 9px rgb(0 0 0 / 45%), inset 5px 5px 9px rgb(86 112 239 / 30%);// 0px 4px 10px rgba(0, 0, 0, 0.1);
+    // background: #fff;
+  }
+  
+  .card h3 {
+    font-size: 18px;
+    // color: #333;
+    margin-bottom: 15px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  @media (max-width: 400px) {
+    .card {
+      width: 90%;
+    }
+  }
+  
