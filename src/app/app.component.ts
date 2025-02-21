@@ -1,6 +1,7 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FileService } from './services/file.service';
 import { Router } from '@angular/router';
+import { ThreeDBackgroundComponent } from './three-dbackground/three-dbackground.component';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent implements OnInit {
   title:string="quickshare";
   isDarkMode: any;
   constructor(private fileService: FileService,private router:Router,private renderer: Renderer2) {}
-
+  @ViewChild('threeBubbles', { static: false }) threeBubbles!: ThreeDBackgroundComponent;
   ngOnInit() {
     this.fileService.cleanupExpiredFiles();
     setInterval(() => {
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
     this.updateTheme();
+    this.threeBubbles.changeTheme(this.isDarkMode ? 'dark' : 'light');
   }
 
   private updateTheme() {
