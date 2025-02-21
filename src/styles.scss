@@ -51,6 +51,12 @@ body {
   --card-dark: rgba(53, 67, 108 , 0.6);
   --link-light: rgb(27 140 255);
   --link-dark: rgba(246, 126, 255,0.6);
+  --wram-light1:rgb(97, 19, 19);
+  --wram-light2:rgb(255, 0, 34);
+  --wram-light3:rgba(0, 0, 0, 0.6);
+  --wram-dark1:rgb(107, 0, 0);
+  --wram-dark2:rgba(255, 0, 34, 1);
+  --wram-dark3:rgba(189, 189, 189, 0.6);
 }
 
 body {
@@ -105,4 +111,21 @@ button:hover {
 
 .dark-mode button {
   background: linear-gradient(135deg, var(--secondary-dark), var(--primary-dark));
+}
+
+
+.primary{
+  background: linear-gradient(135deg, blue,darkcyan,gray);
+}
+
+.wram{
+  background:linear-gradient(135deg, var(--wram-light1),var(--wram-light2),gray );
+}
+
+.dark-mode button.primary{
+  background: linear-gradient(135deg, rgb(0, 0, 146),rgb(0, 85, 85),rgb(73, 73, 73));
+}
+
+.dark-mode button.wram{
+  background:linear-gradient(135deg, var(--wram-dark1),var(--wram-dark2),rgb(73, 73, 73));
 }
