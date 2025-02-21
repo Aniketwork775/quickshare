@@ -146,3 +146,13 @@ button:hover {
   background-color: #1b878f !important; // Blue success color
   color: white !important;
 }
+
+.dark-mode .mat-toolbar.mat-primary {
+  background-color: var(--card-dark);
+  box-shadow: inset -5px -5px 9px rgba(0, 0, 0, 0.45), inset 5px 5px 9px rgba(86, 112, 239, 0.3);
+}
+.mat-toolbar.mat-primary {
+  background-color: var(--card-dark);
+  box-shadow: inset -5px -5px 9px rgba(86, 112, 239, 0.3), inset 5px 5px 9px rgba(0, 0, 0, 0.45);
+  border-radius: 10px;
+}
