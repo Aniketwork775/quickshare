@@ -19,6 +19,7 @@ import { DownloadComponent } from './download/download.component';
 import { FileViewComponent } from './file-view/file-view.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ThreeDBackgroundComponent } from './three-dbackground/three-dbackground.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -41,7 +42,12 @@ import { ThreeDBackgroundComponent } from './three-dbackground/three-dbackground
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     AngularFirestoreModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      timeOut: 2000, // Auto close after 3 sec
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
