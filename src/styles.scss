@@ -129,3 +129,20 @@ button:hover {
 // .dark-mode button.wram{
 //   background:linear-gradient(135deg, var(--wram-dark1),var(--wram-dark2),rgb(73, 73, 73));
 // }
+
+.toast-success {
+  background-color: #258f1b !important; // Blue success color
+  color: white !important;
+}
+.toast-error {
+  background-color: #ff4848 !important; // Red for errors
+  color: white !important;
+}
+.toast-warning{
+  background-color: #b9b030 !important; // Red for errors
+  color: white !important;
+}
+.toast-info {
+  background-color: #1b878f !important; // Blue success color
+  color: white !important;
+}
