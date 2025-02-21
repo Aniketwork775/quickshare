@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-upload',
@@ -24,7 +25,7 @@ export class UploadComponent {
   userIpAddress: any;
   sessionToken: any=null;
 
-  constructor(private firestore: AngularFirestore,private http:HttpClient) {
+  constructor(private firestore: AngularFirestore,private http:HttpClient,private notificationService: NotificationService) {
     this.getIPAddress();
     // console.log("sessionToken --> ",sessionStorage.getItem('Token'));
     this.sessionToken = sessionStorage.getItem('Token');
@@ -110,7 +111,8 @@ export class UploadComponent {
         Token: this.sessionToken // Store the user's IP address 
       });
 
-      alert('File uploaded successfully!');
+      // alert('File uploaded successfully!');
+      this.onUploadSuccess();
       let input=window.document.getElementById('fileInput')
       this.uploaded.emit();
       this.selectedFile = null;
@@ -119,6 +121,13 @@ export class UploadComponent {
     reader.readAsDataURL(this.selectedFile);
   }
 
+  onUploadSuccess() {
+    this.notificationService.showSuccess('File uploaded successfully!');
+  }
+
+  onUploadError() {
+    this.notificationService.showError('File upload failed. Please try again.');
+  }
 
   // async uploadFile() {
   //   if (this.selectedFile) {

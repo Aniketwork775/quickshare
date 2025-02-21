@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-file-list',
@@ -20,7 +21,7 @@ export class FileListComponent implements OnInit {
   files: any[] = [];
   userIpAddress: any;
   sessionToken:any=null;
-  constructor(private firestore: AngularFirestore,private http:HttpClient) {}
+  constructor(private firestore: AngularFirestore,private http:HttpClient,private notificationService: NotificationService) {}
 
   async ngOnInit() {
     this.getIPAddress();
@@ -104,9 +105,14 @@ export class FileListComponent implements OnInit {
     // console.log(fileId);
     
     this.firestore.collection('files').doc(fileId).delete().then(() => {
-      alert('File deleted successfully');
+      // alert('File deleted successfully');
+      this.onDeleteFile();
       this.loadFiles();
     });
+  }
+
+  onDeleteFile() {
+    this.notificationService.showSuccess('File deleted successfully!');
   }
 
   copyLink(file: { name: string, fileData: string,key:string }) {
@@ -118,7 +124,8 @@ export class FileListComponent implements OnInit {
     const shareableLink = `${window.location.origin}/#/file/${file.key}`;          // For Local 
     // const shareableLink = `${window.location.origin}/quickshare/#/file/${file.key}`; // for Producton
     navigator.clipboard.writeText(shareableLink).then(() => {
-      alert('Shareable link copied!');
+      // alert('Shareable link copied!');
+      this.notificationService.showInfo("Shareable link copied!")
     });
   }
 
