@@ -41,7 +41,7 @@
 
     <!-- Progress bars for each file -->
     <div *ngFor="let progress of uploadProgressArray; let i = index" class="progress-wrapper">
-      <p>{{ selectedFiles[i]?.name }}: {{ progress }}%</p>
+      <p>{{ selectedFiles[i] ? selectedFiles[i].name:'' }}: {{ progress }}%</p>
       <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
     </div>
 
