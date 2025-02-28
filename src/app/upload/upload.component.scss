@@ -41,7 +41,6 @@
   transition: background-color 0.3s ease;
 }
 
-/* Highlight drop zone when dragging over */
 .upload-area.drag-over {
   background-color: rgba(0, 121, 107, 0.1);
 }
@@ -66,4 +65,8 @@
 label {
   display: flex;
   justify-content: center;
+}
+
+.progress-wrapper {
+  margin-top: 10px;
 }

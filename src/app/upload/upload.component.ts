@@ -9,12 +9,13 @@ import { NotificationService } from '../services/notification.service';
   styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent {
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
   selectedExpiration: number = 300; // Default to 5 minutes
-  uploadProgress: number | null = null;
+  uploadProgressArray: number[] = [];
   uploading: boolean = false;
   isDragOver: boolean = false;
   @Output() uploaded = new EventEmitter();
+
   expirationOptions = [
     { label: '1 mint', value: 60 },
     { label: '5 mint', value: 300 },
@@ -43,7 +44,8 @@ export class UploadComponent {
   }
 
   onFileSelect(event: any) {
-    this.selectedFile = event.target.files[0];
+    const files: FileList = event.target.files;
+    this.selectedFiles = Array.from(files);
   }
 
   // Drag event handlers
@@ -61,7 +63,8 @@ export class UploadComponent {
     event.preventDefault();
     this.isDragOver = false;
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      this.selectedFile = event.dataTransfer.files[0];
+      const files: FileList = event.dataTransfer.files;
+      this.selectedFiles = Array.from(files);
       event.dataTransfer.clearData();
     }
   }
@@ -86,58 +89,61 @@ export class UploadComponent {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  uploadFile() {
-    if (!this.selectedFile) return;
-
+  uploadFiles() {
+    if (this.selectedFiles.length === 0) return;
     this.uploading = true;
-    this.uploadProgress = 0;
+    this.uploadProgressArray = this.selectedFiles.map(() => 0);
+    this.uploadNext(0);
+  }
 
+  uploadNext(index: number) {
+    if (index >= this.selectedFiles.length) {
+      this.uploading = false;
+      this.notificationService.showSuccess('All files uploaded successfully!');
+      this.uploaded.emit();
+      this.selectedFiles = [];
+      return;
+    }
+    const file = this.selectedFiles[index];
     const reader = new FileReader();
+    reader.onprogress = (event: ProgressEvent<FileReader>) => {
+      if (event.lengthComputable) {
+        // We'll consider 50% progress for reading the file
+        this.uploadProgressArray[index] = Math.round((event.loaded / event.total) * 50);
+      }
+    };
     reader.onload = async (event: any) => {
-      const fileData = event.target.result.split(',')[1]; // Convert to Base64
-
+      const fileData = event.target.result.split(',')[1]; // Base64 data
       const expiresAt = new Date();
       expiresAt.setSeconds(expiresAt.getSeconds() + this.selectedExpiration);
-
-      // Simulate upload progress
-      const interval = setInterval(() => {
-        if (this.uploadProgress! < 100) {
-          this.uploadProgress! += 10;
-        } else {
-          clearInterval(interval);
-          this.uploading = false;
-        }
-      }, 300);
-
-      // Store in Firestore
+      // Simulate the upload to Firestore taking additional progress (50% to 100%)
+      // Since Firestore .add() doesn't support progress events, we simulate a short delay
       await this.firestore.collection('files').add({
-        name: this.selectedFile?.name,
-        size: this.selectedFile?.size,
+        name: file.name,
+        size: file.size,
         createdAt: new Date(),
         fileData,
         expiresAt: expiresAt.getTime(),
         ipAddress: this.userIpAddress,
         Token: this.sessionToken
       });
-
-      this.onUploadSuccess();
-      this.uploaded.emit();
-      this.selectedFile = null;
-      this.uploadProgress = null;
+      // Set progress to 100% for this file
+      this.uploadProgressArray[index] = 100;
+      // Proceed to next file after a short delay
+      setTimeout(() => { 
+        this.uploadProgressArray=[];
+        this.uploadNext(index + 1), 300
+      });
     };
-    reader.readAsDataURL(this.selectedFile);
-  }
-
-  onUploadSuccess() {
-    this.notificationService.showSuccess('File uploaded successfully!');
-  }
-
-  onUploadError() {
-    this.notificationService.showError('File upload failed. Please try again.');
+    reader.onerror = () => {
+      this.notificationService.showError(`Error reading file: ${file.name}`);
+      this.uploadNext(index + 1);
+    };
+    reader.readAsDataURL(file);
   }
 
   cancelUpload() {
     this.uploading = false;
-    this.uploadProgress = null;
+    this.uploadProgressArray = [];
   }
 }
