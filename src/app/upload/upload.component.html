@@ -1,7 +1,11 @@
 <div class="upload-container">
   <h2>Upload Your File</h2>
   <mat-card class="card">
-    <div class="upload-area">
+    <div class="upload-area" 
+         [class.drag-over]="isDragOver"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
       <div class="box__input">
         <svg class="box__icon" xmlns="http://www.w3.org/2000/svg" width="50" height="43" viewBox="0 0 50 43">
           <path

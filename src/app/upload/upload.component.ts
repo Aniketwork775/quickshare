@@ -10,68 +10,78 @@ import { NotificationService } from '../services/notification.service';
 })
 export class UploadComponent {
   selectedFile: File | null = null;
-  selectedExpiration: number = 300; // Default to 7 days
+  selectedExpiration: number = 300; // Default to 5 minutes
   uploadProgress: number | null = null;
   uploading: boolean = false;
-  @Output() uploaded=new EventEmitter();
-  file:any='';
+  isDragOver: boolean = false;
+  @Output() uploaded = new EventEmitter();
   expirationOptions = [
-    // { label: '1 Hour', value: 1 / 24 },
     { label: '1 mint', value: 60 },
     { label: '5 mint', value: 300 },
     { label: '10 mint', value: 600 },
     { label: '30 mint', value: 1800 }
   ];
   userIpAddress: any;
-  sessionToken: any=null;
+  sessionToken: any = null;
 
-  constructor(private firestore: AngularFirestore,private http:HttpClient,private notificationService: NotificationService) {
+  constructor(
+    private firestore: AngularFirestore,
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {
     this.getIPAddress();
-    // console.log("sessionToken --> ",sessionStorage.getItem('Token'));
     this.sessionToken = sessionStorage.getItem('Token');
-    if(this.sessionToken==null){
+    if (this.sessionToken == null) {
       this.sessionToken = this.generateRandomToken();
-      sessionStorage.setItem('Token', this.sessionToken); // Store in sessionStorage
+      sessionStorage.setItem('Token', this.sessionToken);
     }
   }
 
-  // Function to generate a random token
+  // Generate a random token for session tracking
   generateRandomToken(): string {
-    return Math.random().toString(36) // Example token generation
+    return Math.random().toString(36);
   }
-  
+
   onFileSelect(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
+  // Drag event handlers
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = false;
+    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+      this.selectedFile = event.dataTransfer.files[0];
+      event.dataTransfer.clearData();
+    }
+  }
 
   getIPAddress() {
-    // this.http.get<{ ip:any }>('https://api64.ipify.org?format=json').subscribe(
-    //   (response) => {
-    //     this.userIpAddress = response.ip;
-    //     console.log("this.userIpAddress===",this.userIpAddress);
-        
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching IP address', error);
-    //   }
-    // );
-    this.http.get('https://ipinfo.io/json').subscribe((response:any) => {
-      this.userIpAddress=response.ip;
-      // console.log(this.userIpAddress);
-      
-    },(err)=>{
-      // console.error('Error fetching IP:', err);
-      const randomIP = this.generateRandomIp();
-      // console.log('Using Random IP:', randomIP);
-      this.userIpAddress=randomIP;
-    });
+    this.http.get('https://ipinfo.io/json').subscribe(
+      (response: any) => {
+        this.userIpAddress = response.ip;
+      },
+      (err) => {
+        const randomIP = this.generateRandomIp();
+        this.userIpAddress = randomIP;
+      }
+    );
   }
 
   generateRandomIp(): string {
     return `${this.getRandom(1, 255)}.${this.getRandom(0, 255)}.${this.getRandom(0, 255)}.${this.getRandom(1, 255)}`;
   }
-  
+
   getRandom(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -89,10 +99,10 @@ export class UploadComponent {
       const expiresAt = new Date();
       expiresAt.setSeconds(expiresAt.getSeconds() + this.selectedExpiration);
 
-      // Simulating upload progress
+      // Simulate upload progress
       const interval = setInterval(() => {
         if (this.uploadProgress! < 100) {
-          this.uploadProgress! += 10; // Increment progress
+          this.uploadProgress! += 10;
         } else {
           clearInterval(interval);
           this.uploading = false;
@@ -103,17 +113,14 @@ export class UploadComponent {
       await this.firestore.collection('files').add({
         name: this.selectedFile?.name,
         size: this.selectedFile?.size,
-//      fileData: base64String,
         createdAt: new Date(),
         fileData,
         expiresAt: expiresAt.getTime(),
-        ipAddress: this.userIpAddress, // Store the user's IP address 
-        Token: this.sessionToken // Store the user's IP address 
+        ipAddress: this.userIpAddress,
+        Token: this.sessionToken
       });
 
-      // alert('File uploaded successfully!');
       this.onUploadSuccess();
-      let input=window.document.getElementById('fileInput')
       this.uploaded.emit();
       this.selectedFile = null;
       this.uploadProgress = null;
@@ -128,30 +135,6 @@ export class UploadComponent {
   onUploadError() {
     this.notificationService.showError('File upload failed. Please try again.');
   }
-
-  // async uploadFile() {
-  //   if (this.selectedFile) {
-  //     this.uploading = true;
-  //     const fileReader = new FileReader();
-
-  //     fileReader.onload = async (event: any) => {
-  //       const base64String = event.target.result.split(',')[1]; // Extract Base64 data
-
-  //       // Save Base64 string and metadata in Firestore
-  //       await this.firestore.collection('files').add({
-  //         name: this.selectedFile?.name,
-  //         size: this.selectedFile?.size,
-  //         fileData: base64String,
-  //         createdAt: new Date()
-  //       });
-
-  //       this.uploading = false;
-  //       alert('File uploaded successfully!');
-  //     };
-
-  //     fileReader.readAsDataURL(this.selectedFile); // Convert file to Base64
-  //   }
-  // }
 
   cancelUpload() {
     this.uploading = false;
