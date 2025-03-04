@@ -36,7 +36,8 @@ const materialNodules = [
   MatIconModule,
   MatListModule,
   MatSelectModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatInputModule
 ];
 
 @NgModule({
