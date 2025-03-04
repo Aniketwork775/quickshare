@@ -12,6 +12,11 @@
   <!-- Updated loop to use filteredFiles instead of a pipe -->
   <mat-card *ngFor="let file of filteredFiles" class="card" [@fadeIn]>
     <div class="file-info">
+      <!-- File Preview -->
+      <div class="file-preview">
+        <img *ngIf="isImage(file.name)" [src]="file.previewUrl" class="preview-img" (click)="openPreview(file)" />
+        <mat-icon *ngIf="isPDF(file.name)" class="pdf-icon" (click)="openPreview(file)">picture_as_pdf</mat-icon>
+      </div>
       <p><strong>Name:</strong> {{ file.name }}</p>
       <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
       <p>
@@ -25,11 +30,7 @@
         </button>
       </p>
       
-      <!-- File Preview -->
-      <div class="file-preview">
-        <img *ngIf="isImage(file.name)" [src]="file.previewUrl" class="preview-img" (click)="openPreview(file)" />
-        <mat-icon *ngIf="isPDF(file.name)" class="pdf-icon" (click)="openPreview(file)">picture_as_pdf</mat-icon>
-      </div>
+      
 
       <!-- QR Code display -->
       <div *ngIf="file.showQR" class="qr-code" [innerHTML]="file.qrCode"></div>
