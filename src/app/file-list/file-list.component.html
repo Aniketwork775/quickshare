@@ -1,6 +1,6 @@
 <div class="file-list-container container">
   <h2>Uploaded Files</h2>
-  <mat-card *ngFor="let file of files" class="card"  [@fadeIn]>
+  <mat-card *ngFor="let file of files" class="card" [@fadeIn]>
     <div class="file-info">
       <p><strong>Name:</strong> {{ file.name }}</p>
       <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
@@ -10,15 +10,20 @@
         <button mat-icon-button (click)="copyLink(file)" aria-label="Copy Link">
           <mat-icon>content_copy</mat-icon>
         </button>
+        <button mat-icon-button (click)="toggleQRCode(file)" aria-label="Toggle QR Code">
+          <mat-icon>qr_code</mat-icon>
+        </button>
       </p>
+      <!-- QR Code display -->
+      <div *ngIf="file.showQR" class="qr-code" [innerHTML]="file.qrCode"></div>
     </div>
     <div class="file-actions">
       <button mat-raised-button color="primary" class="primary" (click)="downloadFile(file)">Download</button>
-      <button mat-raised-button color="warn" class="wram" (click)="deleteFile(file.key)">Delete</button>
+      <button mat-raised-button color="warn" class="warn" (click)="deleteFile(file.key)">Delete</button>
     </div>
   </mat-card>
 
-  <div *ngIf="files?.length==0">
+  <div *ngIf="files?.length == 0">
     <mat-card class="card">
       <p>No files uploaded yet. Please upload files to see them here.</p>
     </mat-card>
