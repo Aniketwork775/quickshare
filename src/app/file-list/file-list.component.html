@@ -1,6 +1,16 @@
 <div class="file-list-container container">
   <h2>Uploaded Files</h2>
-  <mat-card *ngFor="let file of files" class="card" [@fadeIn]>
+
+  <!-- Search Input -->
+  <!-- <mat-form-field appearance="outline" class="search-bar">
+    <mat-label>Search Files</mat-label>
+    <input matInput type="text" [(ngModel)]="searchQuery" placeholder="Search by name..." />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field> -->
+  
+
+  <!-- Updated loop to use filteredFiles instead of a pipe -->
+  <mat-card *ngFor="let file of filteredFiles" class="card" [@fadeIn]>
     <div class="file-info">
       <p><strong>Name:</strong> {{ file.name }}</p>
       <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
@@ -14,18 +24,32 @@
           <mat-icon>qr_code</mat-icon>
         </button>
       </p>
+      
+      <!-- File Preview -->
+      <div class="file-preview">
+        <img *ngIf="isImage(file.name)" [src]="file.previewUrl" class="preview-img" (click)="openPreview(file)" />
+        <mat-icon *ngIf="isPDF(file.name)" class="pdf-icon" (click)="openPreview(file)">picture_as_pdf</mat-icon>
+      </div>
+
       <!-- QR Code display -->
       <div *ngIf="file.showQR" class="qr-code" [innerHTML]="file.qrCode"></div>
     </div>
+
     <div class="file-actions">
       <button mat-raised-button color="primary" class="primary" (click)="downloadFile(file)">Download</button>
       <button mat-raised-button color="warn" class="warn" (click)="deleteFile(file.key)">Delete</button>
     </div>
   </mat-card>
 
-  <div *ngIf="files?.length == 0">
+  <div *ngIf="filteredFiles?.length == 0">
     <mat-card class="card">
-      <p>No files uploaded yet. Please upload files to see them here.</p>
+      <p>No matching files found.</p>
     </mat-card>
+  </div>
+
+  <!-- Fullscreen Preview Dialog -->
+  <div *ngIf="previewFile" class="fullscreen-preview" (click)="closePreview()">
+    <img *ngIf="isImage(previewFile.name)" [src]="previewFile.previewUrl" />
+    <embed *ngIf="isPDF(previewFile.name)" [src]="previewFile.previewUrl" type="application/pdf" />
   </div>
 </div>

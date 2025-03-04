@@ -5,6 +5,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { NotificationService } from '../services/notification.service';
 
 import * as QRCode from 'qrcode-generator';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 
@@ -25,11 +26,15 @@ export class FileListComponent implements OnInit {
   files: any[] = [];
   userIpAddress: any;
   sessionToken: any = null;
+  searchQuery: string = '';
+  previewFile: any = null;
+  fileUrl!: SafeResourceUrl;
 
   constructor(
     private firestore: AngularFirestore,
     private http: HttpClient,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private sanitizer: DomSanitizer
   ) {}
 
   async ngOnInit() {
@@ -61,8 +66,11 @@ export class FileListComponent implements OnInit {
     if (fileSnapshots) {
       this.files = fileSnapshots.docs
         .map(doc => {
-          const data = doc.data() as Record<string, any>;
-          return { ...data, key: doc.id };
+          const data:any = doc.data() as Record<string, any>;
+          return { 
+            ...data, key: doc.id,
+            previewUrl: this.generatePreviewUrl(data.fileData, data.name)
+          };
         })
         .filter((file: any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress);
     }
@@ -113,6 +121,50 @@ export class FileListComponent implements OnInit {
     }
   }
 
+  isImage(fileName: string): boolean {
+    return /\.(jpg|jpeg|png|gif)$/i.test(fileName);
+  }
+
+  isPDF(fileName: string): boolean {
+    return /\.pdf$/i.test(fileName);
+  }
+
+  setFileUrl(url: string) {
+    
+    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    console.log("this.fileUrl================",this.fileUrl);
+  }
+
+  generatePreviewUrl(fileData: string, fileName: string): string {
+    console.log('hello');
+    
+    if (this.isImage(fileName)) {
+      return `data:image/png;base64,${fileData}`;
+    } else if (this.isPDF(fileName)) {
+      this.setFileUrl(`data:application/pdf;base64,${fileData}`)
+      return `data:application/pdf;base64,${fileData}`;
+    }
+    return '';
+  }
+
+  openPreview(file: any) {
+    console.log("file----------",file);
+    
+    this.previewFile = file;
+  }
+
+  closePreview() {
+    this.previewFile = null;
+  }
+
+  // ✅ Filtering files in TypeScript instead of using a filter pipe
+  get filteredFiles() {
+    if (!this.searchQuery) return this.files;
+    return this.files.filter(file =>
+      file.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+  }
+
   getRemainingTime(expiresAt: number): string {
     const now = Date.now();
     const timeLeft = expiresAt - now;
@@ -150,5 +202,14 @@ export class FileListComponent implements OnInit {
     const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: 'application/octet-stream' });
+  }
+
+  getPreviewUrl(file: any): SafeResourceUrl {
+    // Check if it's a Blob (file uploaded from the local system)
+    if (file instanceof File) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(file));
+    }
+    // Otherwise, assume it's a remote URL and sanitize it
+    return this.sanitizer.bypassSecurityTrustResourceUrl(file.url);
   }
 }

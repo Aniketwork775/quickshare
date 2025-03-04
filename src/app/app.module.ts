@@ -20,6 +20,7 @@ import { FileViewComponent } from './file-view/file-view.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ThreeDBackgroundComponent } from './three-dbackground/three-dbackground.component';
 import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
