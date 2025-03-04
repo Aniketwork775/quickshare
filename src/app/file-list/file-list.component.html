@@ -50,6 +50,6 @@
   <!-- Fullscreen Preview Dialog -->
   <div *ngIf="previewFile" class="fullscreen-preview" (click)="closePreview()">
     <img *ngIf="isImage(previewFile.name)" [src]="previewFile.previewUrl" />
-    <embed *ngIf="isPDF(previewFile.name)" [src]="previewFile.previewUrl" type="application/pdf" />
+    <iframe *ngIf="isPDF(previewFile.name)" [src]="fileUrl" type="application/pdf"></iframe>
   </div>
 </div>
