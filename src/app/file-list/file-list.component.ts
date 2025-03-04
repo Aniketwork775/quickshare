@@ -4,6 +4,10 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NotificationService } from '../services/notification.service';
 
+import * as QRCode from 'qrcode-generator';
+
+
+
 @Component({
   selector: 'app-file-list',
   templateUrl: './file-list.component.html',
@@ -20,27 +24,28 @@ import { NotificationService } from '../services/notification.service';
 export class FileListComponent implements OnInit {
   files: any[] = [];
   userIpAddress: any;
-  sessionToken:any=null;
-  constructor(private firestore: AngularFirestore,private http:HttpClient,private notificationService: NotificationService) {}
+  sessionToken: any = null;
+
+  constructor(
+    private firestore: AngularFirestore,
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {}
 
   async ngOnInit() {
     this.getIPAddress();
   }
 
   getIPAddress() {
-    this.sessionToken=sessionStorage.getItem('Token');
-    this.http.get('https://ipinfo.io/json').subscribe((response:any) => {
-      this.userIpAddress=response.ip;
-      // console.log("this.userIpAddress",this.userIpAddress);
+    this.sessionToken = sessionStorage.getItem('Token');
+    this.http.get('https://ipinfo.io/json').subscribe((response: any) => {
+      this.userIpAddress = response.ip;
       this.loadFiles();
-    },(err)=>{
-      // console.error('Error fetching IP:', err);
+    }, (err) => {
       const randomIP = this.generateRandomIp();
-      // console.log('Using Random IP:', randomIP);
-      this.userIpAddress=randomIP;
+      this.userIpAddress = randomIP;
       this.loadFiles();
     });
-    
   }
 
   generateRandomIp(): string {
@@ -52,47 +57,22 @@ export class FileListComponent implements OnInit {
   }
 
   async loadFiles() {
-    // const fileSnapshots = await this.firestore.collection('files').get().toPromise();
-    // if (fileSnapshots) {
-    //   this.files = fileSnapshots.docs.map(doc => {
-    //     const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
-    //     return { ...data, key: doc.id };
-    //   });
-    // }
-    // console.log("this.userIpAddress=====",this.userIpAddress);
-    
     const fileSnapshots = await this.firestore.collection('files').get().toPromise();
     if (fileSnapshots) {
       this.files = fileSnapshots.docs
         .map(doc => {
-          const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
+          const data = doc.data() as Record<string, any>;
           return { ...data, key: doc.id };
         })
-        .filter((file:any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress); // Filters files where IP is '127.0.0.1' 
+        .filter((file: any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress);
     }
-    // this.firestore.collection('files', ref => ref.where('ipAddress', '==', this.userIpAddress))
-    //   .valueChanges()
-    //   .subscribe(files => {
-    //     this.files = files;
-    //   });
-    
   }
 
   loadnewFiles() {
-    setTimeout( () => {
+    setTimeout(() => {
       this.loadFiles();
-      // const fileSnapshots = await this.firestore.collection('files').get().toPromise();
-      // if (fileSnapshots) {
-      //   this.files = fileSnapshots.docs
-      //     .map(doc => {
-      //       const data = doc.data() as Record<string, any>; // Ensures data is treated as an object
-      //       return { ...data, key: doc.id };
-      //     })
-      //     .filter((file: any) => file?.Token === this.sessionToken && file.ipAddress === this.userIpAddress); 
-      // }
     }, 1000);
   }
-  
 
   downloadFile(file: any) {
     const link = document.createElement('a');
@@ -102,10 +82,7 @@ export class FileListComponent implements OnInit {
   }
 
   deleteFile(fileId: string) {
-    // console.log(fileId);
-    
     this.firestore.collection('files').doc(fileId).delete().then(() => {
-      // alert('File deleted successfully');
       this.onDeleteFile();
       this.loadFiles();
     });
@@ -115,49 +92,53 @@ export class FileListComponent implements OnInit {
     this.notificationService.showSuccess('File deleted successfully!');
   }
 
-  copyLink(file: { name: string, fileData: string,key:string }) {
-    // const blob = this.base64ToBlob(file.fileData);
-    // const url = window.URL.createObjectURL(blob);
-    // const a=btoa(url);
-    // const b=btoa(file.name);
-    // const shareableLink = `${window.location.origin}/download/${a}/${b}`;
-    const shareableLink = `${window.location.origin}/#/file/${file.key}`;          // For Local 
-    // const shareableLink = `${window.location.origin}/quickshare/#/file/${file.key}`; // for Producton
+  copyLink(file: { name: string, fileData: string, key: string }) {
+    const shareableLink = `${window.location.origin}/#/file/${file.key}`;
     navigator.clipboard.writeText(shareableLink).then(() => {
-      // alert('Shareable link copied!');
-      this.notificationService.showInfo("Shareable link copied!")
+      this.notificationService.showInfo("Shareable link copied!");
     });
+  }
+
+  toggleQRCode(file: any) {
+    file.showQR = !file.showQR;
+    if (file.showQR && !file.qrCode) {
+      const shareableLink = `${window.location.origin}/#/file/${file.key}`;
+      const typeNumber = 4; // Adjust type number based on content length
+      const errorCorrectionLevel = 'L';
+      const qr = QRCode(typeNumber, errorCorrectionLevel);
+      qr.addData(shareableLink);
+      qr.make();
+      // Create an image tag for the QR code; scale factor is set to 4
+      file.qrCode = qr.createImgTag(4);
+    }
   }
 
   getRemainingTime(expiresAt: number): string {
     const now = Date.now();
     const timeLeft = expiresAt - now;
-
     if (timeLeft <= 0) return 'Expired';
 
     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const mint = Math.floor((timeLeft % (1000 * 60 * 60 )) / (1000 * 60))+1;
-    var str='';
-    if(days>0){
-      str=`${days} days`;
-      if(hours>0){
-        str=str+`, ${hours} hours`;
-        if(mint>0){
-          str=str+`, ${mint} mints`
+    const mint = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)) + 1;
+    let str = '';
+    if (days > 0) {
+      str = `${days} days`;
+      if (hours > 0) {
+        str += `, ${hours} hours`;
+        if (mint > 0) {
+          str += `, ${mint} mints`;
         }
       }
-    }
-    else{
-      if(hours>0){
-        str=`${hours} hours`;
-        if(mint>0){
-          str=str+`, ${mint} mints`
+    } else {
+      if (hours > 0) {
+        str = `${hours} hours`;
+        if (mint > 0) {
+          str += `, ${mint} mints`;
         }
-      }
-      else{
-        if(mint>0){
-          str=`${mint} mints`
+      } else {
+        if (mint > 0) {
+          str = `${mint} mints`;
         }
       }
     }
