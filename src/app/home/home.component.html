@@ -15,7 +15,11 @@
     </mat-card>
   </div> -->
 <!-- <app-three-dbackground></app-three-dbackground> -->
-<div class="main-container">
-  <app-upload (uploaded)="FileListComponent.loadnewFiles()"></app-upload>
-  <app-file-list #FileListComponent></app-file-list>
+<div class="row">
+  <div class="col-6">
+    <app-upload (uploaded)="FileListComponent.loadnewFiles()"></app-upload>
+  </div>
+  <div class="col-6">
+    <app-file-list #FileListComponent></app-file-list>
+  </div>
 </div>
