@@ -77,6 +77,9 @@ body {
   transition: transform 0.2s ease;
 }
 
+.dark-mode strong,span,p{
+  color: var(--background-light);
+}
 a{
   text-decoration: none;
   color: var(--link-light);
