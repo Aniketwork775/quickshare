@@ -10,41 +10,42 @@
   
 
   <!-- Updated loop to use filteredFiles instead of a pipe -->
-  <mat-card *ngFor="let file of filteredFiles" class="card" [@fadeIn]>
-    <div class="file-info">
-      <!-- File Preview -->
-      <div class="file-preview">
-        <img *ngIf="isImage(file.name)" [src]="file.previewUrl" class="preview-img" (click)="openPreview(file)" />
-        <mat-icon *ngIf="isPDF(file.name)" class="pdf-icon" (click)="openPreview(file)">picture_as_pdf</mat-icon>
-      </div>
-      <p><strong>Name:</strong> {{ file.name }}</p>
-      <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
-      <p>
-        <strong>Shareable Link:</strong>
-        <a [href]="'/#/file/' + file.key" target="_blank">{{ '/file/' + file.key }}</a>&nbsp;
-        <button mat-icon-button (click)="copyLink(file)" aria-label="Copy Link">
-          <mat-icon>content_copy</mat-icon>
-        </button>
-        <button mat-icon-button (click)="toggleQRCode(file)" aria-label="Toggle QR Code">
-          <mat-icon>qr_code</mat-icon>
-        </button>
-      </p>
-      
-      
-
-      <!-- QR Code display -->
-      <div *ngIf="file.showQR" class="qr-code" [innerHTML]="file.qrCode"></div>
-    </div>
-
-    <div class="file-actions">
-      <button mat-raised-button color="primary" class="primary" (click)="downloadFile(file)">Download</button>
-      <button mat-raised-button color="warn" class="warn" (click)="deleteFile(file.key)">Delete</button>
-    </div>
-  </mat-card>
-
   <div *ngIf="filteredFiles?.length == 0">
     <mat-card class="card">
       <p>No matching files found.</p>
+    </mat-card>
+  </div>
+   <div class="scroll">
+    <mat-card *ngFor="let file of filteredFiles" class="card" [@fadeIn]>
+      <div class="file-info">
+        <!-- File Preview -->
+        <div class="file-preview">
+          <img *ngIf="isImage(file.name)" [src]="file.previewUrl" class="preview-img" (click)="openPreview(file)" />
+          <mat-icon *ngIf="isPDF(file.name)" class="pdf-icon" (click)="openPreview(file)">picture_as_pdf</mat-icon>
+        </div>
+        <p><strong>Name:</strong> {{ file.name }}</p>
+        <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
+        <p>
+          <strong>Shareable Link:</strong>
+          <a [href]="'/#/file/' + file.key" target="_blank">{{ '/file/' + file.key }}</a>&nbsp;
+          <button mat-icon-button (click)="copyLink(file)" aria-label="Copy Link">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <button mat-icon-button (click)="toggleQRCode(file)" aria-label="Toggle QR Code">
+            <mat-icon>qr_code</mat-icon>
+          </button>
+        </p>
+        
+        
+
+        <!-- QR Code display -->
+        <div *ngIf="file.showQR" class="qr-code" [innerHTML]="file.qrCode"></div>
+      </div>
+
+      <div class="file-actions">
+        <button mat-raised-button color="primary" class="primary" (click)="downloadFile(file)">Download</button>
+        <button mat-raised-button color="warn" class="warn" (click)="deleteFile(file.key)">Delete</button>
+      </div>
     </mat-card>
   </div>
 
