@@ -165,3 +165,21 @@ button:hover {
   box-shadow: inset -5px -5px 9px rgba(86, 112, 239, 0.3), inset 5px 5px 9px rgba(0, 0, 0, 0.45);
   border-radius: 10px;
 }
+
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height of the scrollbar */
+}
+
+/* Style for the scrollbar track */
+::-webkit-scrollbar-track {
+  background: transparent; /* Background color of the track */
+}
+
+/* Style for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #f3efef; /* Color of the thumb */
+  border-radius: 10px; /* Roundness of the thumb */
+  border: 2px solid transparent; /* Space around the thumb */
+  background-clip: content-box; /* Prevent border from hiding part of the thumb */
+}
