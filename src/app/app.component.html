@@ -1,14 +1,13 @@
 <mat-toolbar color="primary" class="toolbar">
-    <span class="logo" (click)="navigation()">QuickTransfer</span>
-    <span class="spacer"></span>
-    <button mat-icon-button aria-label="Toggle Dark Mode" (click)="toggleDarkMode()">
-      <!-- <mat-icon>brightness_6</mat-icon> -->
-      <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
-    </button>
-  </mat-toolbar>
-  
-  <div class="container">
-    <!-- <app-three-dbackground #threeBubbles></app-three-dbackground> -->
-    <router-outlet></router-outlet>
-  </div>
-  
+  <span class="logo" (click)="navigation()">QuickTransfer</span>
+  <span class="spacer"></span>
+  <button mat-icon-button aria-label="Toggle Dark Mode" (click)="toggleDarkMode()">
+    <!-- <mat-icon>brightness_6</mat-icon> -->
+    <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="container">
+  <!-- <app-three-dbackground #threeBubbles></app-three-dbackground> -->
+  <router-outlet></router-outlet>
+</div>
