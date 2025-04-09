@@ -132,11 +132,11 @@ export class FileListComponent implements OnInit {
   setFileUrl(url: string) {
     
     this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    console.log("this.fileUrl================",this.fileUrl);
+    // console.log("this.fileUrl================",this.fileUrl);
   }
 
   generatePreviewUrl(fileData: string, fileName: string): string {
-    console.log('hello');
+    // console.log('hello');
     
     if (this.isImage(fileName)) {
       return `data:image/png;base64,${fileData}`;
@@ -148,7 +148,7 @@ export class FileListComponent implements OnInit {
   }
 
   openPreview(file: any) {
-    console.log("file----------",file);
+    // console.log("file----------",file);
     
     this.previewFile = file;
   }
