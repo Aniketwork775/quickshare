@@ -101,7 +101,8 @@ export class FileListComponent implements OnInit {
   }
 
   copyLink(file: { name: string, fileData: string, key: string }) {
-    const shareableLink = `${window.location.origin}/#/file/${file.key}`;
+    // const shareableLink = `${window.location.origin}/#/file/${file.key}`;
+    const shareableLink = `${window.location.origin}/quickshare/#/file/${file.key}`;
     navigator.clipboard.writeText(shareableLink).then(() => {
       this.notificationService.showInfo("Shareable link copied!");
     });
@@ -110,7 +111,8 @@ export class FileListComponent implements OnInit {
   toggleQRCode(file: any) {
     file.showQR = !file.showQR;
     if (file.showQR && !file.qrCode) {
-      const shareableLink = `${window.location.origin}/#/file/${file.key}`;
+      // const shareableLink = `${window.location.origin}/#/file/${file.key}`;
+      const shareableLink = `${window.location.origin}/quickshare/#/file/${file.key}`;
       const typeNumber = 4; // Adjust type number based on content length
       const errorCorrectionLevel = 'L';
       const qr = QRCode(typeNumber, errorCorrectionLevel);
