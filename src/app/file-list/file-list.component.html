@@ -27,7 +27,7 @@
         <p><strong>Expires At:</strong> {{ file.expiresAt | date:'medium' }}</p>
         <p>
           <strong>Shareable Link:</strong>
-          <a [href]="'/quickshare/#/file/' + file.key" target="_blank">{{ '/file/' + file.key }}</a>&nbsp;
+          <a [href]="'/#/file/' + file.key" target="_blank">{{ '/file/' + file.key }}</a>&nbsp;
           <button mat-icon-button (click)="copyLink(file)" aria-label="Copy Link">
             <mat-icon>content_copy</mat-icon>
           </button>
